@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'secret'
 app.app_context().push()
 
 connect_db(app)
-db.create_all()
+# db.create_all()
 
 
 @app.route('/')
