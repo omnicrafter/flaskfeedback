@@ -47,3 +47,20 @@ class User(db.Model):
             return u
         else:
             return False
+
+
+class Feedback(db.Model):
+    """Feedback"""
+
+    __tablename__ = "feedbacks"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.Text, nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete='cascade'), nullable=False)
+
+    user = db.relationship('User', backref="feedbacks")
+
+    def __repr__(self):
+        return f"<Feedback #{self.id}: {self.title}: {self.content}: {self.user.username}>"

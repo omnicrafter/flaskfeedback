@@ -12,7 +12,13 @@
   <body>
     <nav class="navbar navbar-light bg-primary justify-content-between">
       <div class="container">
-        <a href="/" class="navbar-brand text-light">Super Secure App</a>
+        {%if session ['user_id']%}
+        <a href="/users/{{session['user_id']}}" class="navbar-brand text-light"
+          >Super Secure App</a
+        >
+        {%else%}
+        <a href="/login" class="navbar-brand text-light">Super Secure App</a>
+        {%endif%}
         <ul class="nav navbar-nav flex-row float-right">
           {% if session['user_id']%}
           <li class="nav-item">

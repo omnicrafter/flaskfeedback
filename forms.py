@@ -28,3 +28,10 @@ class LoginForm(FlaskForm):
                            InputRequired(message="Please enter a username"), Length(max=20)])
     password = PasswordField("Password", validators=[
                              InputRequired(message="Please enter a password")])
+
+
+class FeedbackForm(FlaskForm):
+    title = StringField("Title", validators=[InputRequired(
+        message="Must have a title"), Length(max=100)])
+    content = StringField("Content", validators=[
+                          InputRequired(message="Must have content")])

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from models import connect_db, db, User
-from forms import UserForm, RegistrationForm, LoginForm
+from models import connect_db, db, User, Feedback
+from forms import UserForm, RegistrationForm, LoginForm, FeedbackForm
 
 
 app = Flask(__name__)
@@ -17,9 +17,9 @@ connect_db(app)
 
 @app.route('/')
 def homepage():
-    """Redirect to /register"""
+    """Redirect to /login"""
 
-    return redirect('/register')
+    return redirect('/login')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -52,6 +52,8 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'user_id' in session:
+        return redirect(f"/users/{session['user_id']}")
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -61,11 +63,22 @@ def login():
         if user:
             flash(f'Welcome Back, {user.username}!')
             session['user_id'] = user.id
-            return redirect('/secret')
+            return redirect(f'/users/{user.id}')
         else:
             form.username.errors = ['Invalid username/password']
 
     return render_template("login.html", form=form)
+
+
+@app.route('/users/<int:user_id>')
+def show_user(user_id):
+    """Show user info"""
+    if 'user_id' not in session:
+        flash('Please log in to view this page')
+        return redirect('/login')
+
+    user = User.query.get_or_404(user_id)
+    return render_template('user.html', user=user)
 
 
 @app.route('/secret')
