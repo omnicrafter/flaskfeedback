@@ -14,12 +14,18 @@
       <div class="container">
         <a href="/" class="navbar-brand text-light">Super Secure App</a>
         <ul class="nav navbar-nav flex-row float-right">
+          {% if session['user_id']%}
           <li class="nav-item">
-            <a class="nav-link pr-3 text-light" href="">Login</a>
+            <a class="nav-link pr-3 text-light" href="/logout">Log out</a>
+          </li>
+          {% else%}
+          <li class="nav-item">
+            <a class="nav-link pr-3 text-light" href="/login">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="">Sign up</a>
+            <a class="nav-link text-light" href="/register">Sign up</a>
           </li>
+          {%endif%}
         </ul>
       </div>
     </nav>
