@@ -63,4 +63,4 @@ class Feedback(db.Model):
     user = db.relationship('User', backref="feedbacks")
 
     def __repr__(self):
-        return f"<Feedback #{self.id}: {self.title}: {self.content}: {self.user.username}>"
+        return f"<Feedback #{self.id}: {self.title}: {self.content}: User id:{self.user_id}>"

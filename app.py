@@ -98,3 +98,21 @@ def logout_user():
     session.pop('user_id')
     flash('bye bye')
     return redirect('/')
+
+
+@app.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    """Delete a user"""
+
+    if 'user_id' in session:
+        correct_user = session['user_id']
+        user = User.query.get_or_404(correct_user)
+
+        db.session.delete(user)
+        db.session.commit()
+        session.pop('user_id')
+        flash('User has been deleted')
+        return redirect('/login')
+    else:
+        flash('You do not have authorization to do this!')
+        return redirect('/login')
