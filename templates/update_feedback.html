@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends 'base.html'%}{%block title%}Update feedback{%endblock%} {% block
+content %}
+<h1>Feedback Update</h1>
+
+<form action="/feedback/{{feedback.id}}/update" method="POST">
+  {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
+  'hidden' %}
+  <p>
+    {{field.label}}: {{field(class_="form-control", value=field.data) }} {% for
+    error in field.errors %}
+    <span class="form-text text-danger">{{error}}</span>
+    {% endfor%}
+  </p>
+  {%endfor%}
+  <button class="btn btn-success">Save changes</button>
+</form>
+{%endblock%}

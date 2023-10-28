@@ -1,7 +1,7 @@
 <!DOCTYPE html> {% extends 'base.html'%}{%block title%}Feedback{%endblock%} {%
 block content %}
 <h2>Any Suggestions?</h2>
-<form method="POST">
+<form action="/users/{{user.id}}/feedback/add" method="POST">
   {{form.hidden_tag()}} {% for field in form if field.widget.input_type !=
   'hidden' %}
   <p>
