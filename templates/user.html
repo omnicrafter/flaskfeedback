@@ -8,4 +8,12 @@
 <form action="/users/{{user.id}}/delete" method="POST">
   <button>Delete User</button>
 </form>
-{%endblock%}
+<br />
+<h2>Current Feedback</h2>
+<form action="/users/{{user.id}}/feedback/add">
+  <button>Create Feedback</button>
+</form>
+<br />
+{%for feedback in feedbacks%}
+<p><a href="/feedback/{{feedback.id}}/update">{{feedback.title}}</a></p>
+{%endfor%} {%endblock%}

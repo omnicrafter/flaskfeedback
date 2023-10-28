@@ -78,7 +78,8 @@ def show_user(user_id):
         return redirect('/login')
 
     user = User.query.get_or_404(user_id)
-    return render_template('user.html', user=user)
+    feedbacks = Feedback.query.filter_by(user_id=user_id).all()
+    return render_template('user.html', user=user, feedbacks=feedbacks)
 
 
 @app.route('/secret')
@@ -116,3 +117,32 @@ def delete_user(user_id):
     else:
         flash('You do not have authorization to do this!')
         return redirect('/login')
+
+
+@app.route('/users/<int:user_id>/feedback/add', methods=['GET', 'POST'])
+def add_feedback(user_id):
+    """Generate Feedback Form or Process New Feedback"""
+
+    if 'user_id' not in session:
+        flash("You don't have access to that page!")
+        return redirect('/login')
+
+    form = FeedbackForm()
+
+    if form.validate_on_submit():
+        correct_user = session['user_id']
+
+        title = form.title.data
+        content = form.content.data
+        user_id = correct_user
+
+        new_feedback = Feedback(title=title, content=content, user_id=user_id)
+        db.session.add(new_feedback)
+        db.session.commit()
+        flash('Your feedback has been saved!')
+        return redirect(f'/users/{user_id}')
+    else:
+        return render_template('feedback.html', form=form)
+
+    # correct_user = session['user_id']
+    # user = User.query.get_or_404(correct_user)
